@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: var(--font-inter);
+  --font-jetbrains-mono: var(--font-jetbrains-mono);
+  --animation-duration: 200ms;
+  --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  /* נגישות בסיסית */
+  *:focus {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+
+  *:focus:not(:focus-visible) {
+    @apply outline-none;
+  }
+
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+
+  /* תמיכה בתנועה מופחתת */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-900;
+    font-family: var(--font-inter);
+  }
+
+  code, pre {
+    font-family: var(--font-jetbrains-mono);
+  }
+
+  /* אינטראקציות בסיסיות */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-easing);
+  }
+
+  button:hover, a:hover, [role="button"]:hover {
+    opacity: 0.9;
+  }
+
+  button:active, a:active, [role="button"]:active {
+    transform: scale(0.98);
+  }
+
+  /* תמיכה בניווט מקלדת */
+  [tabindex]:not([tabindex="-1"]) {
+    @apply outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* הסתרת אלמנטים מקוראי מסך */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+
+  /* תמיכה בכיווניות RTL */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="rtl"] .flip-x {
+    transform: scaleX(-1);
+  }
+}
+
+@layer components {
+  .data-grid {
+    @apply w-full;
+  }
+
+  .data-grid-header {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+
+  .data-grid-cell {
+    @apply px-4 py-2;
+  }
+
+  .chart-container {
+    @apply relative;
+    aspect-ratio: 16/9;
+  }
+
+  .metric-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4;
+    transition: transform var(--animation-duration) var(--animation-easing);
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .metric-value {
+    @apply text-2xl font-normal;
+  }
+
+  .metric-label {
+    @apply text-sm font-medium;
+  }
+
+  .metric-description {
+    @apply text-sm text-gray-600 dark:text-gray-400;
+  }
+
+  /* אנימציות */
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity var(--animation-duration) var(--animation-easing);
+  }
+
+  .slide-enter {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  .slide-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all var(--animation-duration) var(--animation-easing);
+  }
+
+  .scale-enter {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  .scale-enter-active {
+    transform: scale(1);
+    opacity: 1;
+    transition: all var(--animation-duration) var(--animation-easing);
+  }
+
+  /* נגישות קומפוננטות */
+  .accessible-button {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md;
+    @apply text-sm font-medium text-white bg-blue-600;
+    @apply hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .accessible-input {
+    @apply block w-full px-3 py-2 rounded-md;
+    @apply text-gray-900 bg-white border border-gray-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .accessible-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+    @apply mb-1;
+  }
+} 

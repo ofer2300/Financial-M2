@@ -1,0 +1,20 @@
+10016	IGNORE	Regular expression too many repetitions	/api/.*
+10020	IGNORE	Missing Anti-CSRF Tokens	/api/auth/.*
+10021	IGNORE	X-Content-Type-Options Header Missing	/static/.*
+10049	IGNORE	Non-Storable Content	/api/.*
+40025	IGNORE	Proxy Disclosure	/.*
+90022	IGNORE	Application Error Disclosure	/.*
+
+10202	WARN	Absence of Anti-CSRF Tokens	/api/(?!auth/).*
+40012	WARN	Cross Site Scripting (Reflected)	/.*
+40014	WARN	Cross Site Scripting (Persistent)	/.*
+40018	WARN	SQL Injection	/api/.*
+
+10023	BLOCK	Information Disclosure - Debug Error Messages	/.*
+10202	BLOCK	Absence of Anti-CSRF Tokens	/api/auth/.*
+40003	BLOCK	CRLF Injection	/.*
+40009	BLOCK	Server Side Include	/.*
+40012	BLOCK	Cross Site Scripting (Reflected)	/api/.*
+40014	BLOCK	Cross Site Scripting (Persistent)	/api/.*
+40018	BLOCK	SQL Injection	/api/auth/.*
+90019	BLOCK	Server Side Code Injection	/.* 

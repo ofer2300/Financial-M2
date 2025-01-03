@@ -1,0 +1,198 @@
+project:
+  name: Video Conference System
+  type: Web Application
+  purpose: מערכת ועידת וידאו אינטגרטיבית
+  version: 1.0.0
+
+core_features:
+  - name: ניהול פגישות
+    description: תזמון וניהול פגישות וידאו
+    components:
+      - "@fullcalendar/react@6.1.10"
+      - "@fullcalendar/daygrid@6.1.10"
+      - "@fullcalendar/interaction@6.1.10"
+      - "@sendgrid/mail@8.1.0"
+    integrations:
+      - "Google Calendar API"
+      - "Outlook Calendar API"
+
+  - name: שידור וידאו
+    description: ניהול שיחות וידאו בזמן אמת
+    components:
+      - "mediasoup-client@3.7.0"
+      - "webrtc-adapter@8.2.3"
+      - "@daily-co/daily-js@0.55.0"
+    requirements:
+      - "WebRTC support"
+      - "TURN/STUN servers"
+
+  - name: שיתוף תוכן
+    description: שיתוף מסך ומסמכים
+    components:
+      - "pdfjs-dist@4.0.0"
+      - "fabric.js@5.3.0"
+      - "@excalidraw/excalidraw@0.17.0"
+    features:
+      - "Screen sharing"
+      - "Document annotation"
+      - "Real-time collaboration"
+
+  - name: תיעוד ומעקב
+    description: הקלטה, תמלול וניהול משימות
+    components:
+      - "@deepgram/sdk@3.1.0"
+      - "@microsoft/cognitiveservices-speech-sdk@1.34.0"
+      - "openai@4.24.0"
+    integrations:
+      - "Jira API"
+      - "Monday.com API"
+
+technical_requirements:
+  frontend:
+    framework: "Next.js@14.1.0"
+    runtime: "Node.js@18.x"
+    language: "TypeScript@5.0.3"
+    
+  backend:
+    server: "Node.js + MediaSoup"
+    database: "PostgreSQL + TimescaleDB"
+    cache: "Redis"
+    messaging: "RabbitMQ"
+    
+  infrastructure:
+    media_server: "MediaSoup Cluster"
+    cdn: "CloudFront"
+    storage: "S3"
+    transcoding: "AWS Elemental"
+
+dependencies:
+  ui:
+    core:
+      - name: "react@18.2.0"
+        purpose: "ספריית UI ראשית"
+      - name: "next@14.1.0"
+        purpose: "Framework"
+        
+    components:
+      - name: "@radix-ui/react-dialog@1.0.5"
+        purpose: "חלונות דו-שיח"
+      - name: "@radix-ui/react-popover@1.0.7"
+        purpose: "תפריטים ובועות מידע"
+      - name: "@radix-ui/react-toolbar@1.0.4"
+        purpose: "סרגלי כלים"
+        
+    video:
+      - name: "mediasoup-client@3.7.0"
+        purpose: "ניהול וידאו WebRTC"
+      - name: "@daily-co/daily-js@0.55.0"
+        purpose: "ניהול חדרי ועידה"
+      - name: "webrtc-adapter@8.2.3"
+        purpose: "תאימות דפדפנים"
+        
+    collaboration:
+      - name: "@excalidraw/excalidraw@0.17.0"
+        purpose: "לוח שיתופי"
+      - name: "fabric.js@5.3.0"
+        purpose: "עריכת מסמכים"
+      - name: "pdfjs-dist@4.0.0"
+        purpose: "הצגת PDF"
+
+services:
+  media:
+    - name: "MediaSoup"
+      purpose: "ניהול וידאו SFU"
+      scaling: "Horizontal"
+      
+    - name: "Deepgram"
+      purpose: "תמלול בזמן אמת"
+      api_version: "v1"
+      
+    - name: "OpenAI"
+      purpose: "סיכום פגישות"
+      models:
+        - "gpt-4-turbo"
+        - "whisper-1"
+
+  storage:
+    - name: "S3"
+      purpose: "הקלטות ומסמכים"
+      lifecycle:
+        - "30d active"
+        - "90d archive"
+        
+    - name: "Redis"
+      purpose: "נתוני פגישה חיים"
+      retention: "24h"
+
+security:
+  encryption:
+    - "DTLS for WebRTC"
+    - "TLS 1.3 for API"
+    - "AES-256 for storage"
+    
+  authentication:
+    - "JWT"
+    - "OAuth2"
+    - "SAML"
+    
+  compliance:
+    - "GDPR"
+    - "HIPAA"
+    - "SOC2"
+
+architecture:
+  frontend:
+    - "Next.js App Router"
+    - "React Server Components"
+    - "WebRTC Client"
+    
+  backend:
+    - "Node.js Microservices"
+    - "MediaSoup SFU"
+    - "Event-driven"
+    
+  data:
+    - "PostgreSQL (metadata)"
+    - "TimescaleDB (metrics)"
+    - "Redis (real-time)"
+
+deployment:
+  environments:
+    development:
+      - "Docker Compose"
+      - "Local MediaSoup"
+      
+    staging:
+      - "K8s Cluster"
+      - "Test TURN/STUN"
+      
+    production:
+      - "AWS EKS"
+      - "Global TURN/STUN"
+
+monitoring:
+  metrics:
+    - "WebRTC stats"
+    - "Media quality"
+    - "Server resources"
+    
+  logging:
+    - "ELK Stack"
+    - "OpenTelemetry"
+    - "CloudWatch"
+
+development_workflow:
+  local:
+    - "Docker Compose up"
+    - "MediaSoup local mode"
+    - "Mock external services"
+    
+  testing:
+    - "Jest for unit tests"
+    - "Cypress for E2E"
+    - "WebRTC mocks"
+    
+  deployment:
+    - "GitHub Actions"
+    - "ArgoCD"
+    - "Terraform" 
