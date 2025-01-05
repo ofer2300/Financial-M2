@@ -12,6 +12,7 @@
 
 # Production
 /build
+/dist
 
 # Python
 __pycache__/
@@ -22,6 +23,7 @@ __pycache__/
 .env
 venv/
 ENV/
+.pytest_cache/
 
 # misc
 .DS_Store
@@ -48,4 +50,23 @@ logs
 
 # Local files
 .vercel
-.env*.local 
+.env*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+.temp/
+.tmp/
+.cache/
+.zap/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# System Files
+Thumbs.db
+.DS_Store
+desktop.ini 
