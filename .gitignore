@@ -6,67 +6,41 @@
 # Testing
 /coverage
 
-# Next.js
-/.next/
-/out/
-
 # Production
 /build
 /dist
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-.env
-venv/
-ENV/
-.pytest_cache/
-
-# misc
+# Misc
 .DS_Store
-*.pem
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env
 
-# Debug
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Logs
-logs
-*.log
-
-# Local files
-.vercel
-.env*.local
-
-# TypeScript
-*.tsbuildinfo
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Temporary files
-.temp/
-.tmp/
-.cache/
-.zap/
+*.tmp
+*.temp
+*.log
+*.cache
 
-# Database
-*.sqlite
-*.sqlite3
-*.db
-
-# System Files
-Thumbs.db
-.DS_Store
-desktop.ini 
+# Project specific
+json_splitter.py
+plumbing_part_*.json
+r8csCRLR - plumbing.json
+split_json_output/
+split_json_output_small/ 

@@ -1,105 +1,69 @@
-import { createClient } from '@supabase/supabase-js';
+import winston from 'winston';
 
-interface LogEntry {
-  level: 'info' | 'warn' | 'error';
-  message: string;
-  metadata: Record<string, any>;
-  timestamp: string;
-  user_id?: string;
-  ip_address?: string;
-  request_path?: string;
+// הגדרות פורמט
+const logFormat = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.errors({ stack: true }),
+  winston.format.json()
+);
+
+// יצירת Logger
+export const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: logFormat,
+  defaultMeta: { service: 'video-conference' },
+  transports: [
+    // כתיבה לקובץ עבור כל הרמות
+    new winston.transports.File({
+      filename: 'logs/error.log',
+      level: 'error',
+      maxsize: 5242880, // 5MB
+      maxFiles: 5
+    }),
+    new winston.transports.File({
+      filename: 'logs/combined.log',
+      maxsize: 5242880, // 5MB
+      maxFiles: 5
+    })
+  ]
+});
+
+// הוספת כתיבה לקונסול בסביבת פיתוח
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    )
+  }));
 }
 
-export class Logger {
-  private supabase;
-  private static instance: Logger;
+// פונקציות עזר
+export const logError = (error: Error, context?: object) => {
+  logger.error({
+    message: error.message,
+    stack: error.stack,
+    ...context
+  });
+};
 
-  private constructor() {
-    this.supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-  }
+export const logInfo = (message: string, context?: object) => {
+  logger.info({
+    message,
+    ...context
+  });
+};
 
-  public static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
+export const logWarning = (message: string, context?: object) => {
+  logger.warn({
+    message,
+    ...context
+  });
+};
 
-  private async log(entry: LogEntry) {
-    try {
-      const { error } = await this.supabase
-        .from('system_logs')
-        .insert([entry]);
-
-      if (error) throw error;
-
-      // שמירת לוגים קריטיים גם בקובץ מקומי
-      if (entry.level === 'error') {
-        console.error(JSON.stringify(entry, null, 2));
-      }
-    } catch (error) {
-      console.error('Failed to write log:', error);
-    }
-  }
-
-  public async info(message: string, metadata: Record<string, any> = {}) {
-    await this.log({
-      level: 'info',
-      message,
-      metadata,
-      timestamp: new Date().toISOString()
-    });
-  }
-
-  public async warn(message: string, metadata: Record<string, any> = {}) {
-    await this.log({
-      level: 'warn',
-      message,
-      metadata,
-      timestamp: new Date().toISOString()
-    });
-  }
-
-  public async error(message: string, metadata: Record<string, any> = {}) {
-    await this.log({
-      level: 'error',
-      message,
-      metadata,
-      timestamp: new Date().toISOString()
-    });
-  }
-
-  public async logRequest(
-    path: string,
-    userId?: string,
-    ipAddress?: string,
-    metadata: Record<string, any> = {}
-  ) {
-    await this.log({
-      level: 'info',
-      message: `HTTP Request: ${path}`,
-      metadata,
-      timestamp: new Date().toISOString(),
-      user_id: userId,
-      ip_address: ipAddress,
-      request_path: path
-    });
-  }
-
-  public async logSecurityEvent(
-    event: string,
-    userId?: string,
-    metadata: Record<string, any> = {}
-  ) {
-    await this.log({
-      level: 'warn',
-      message: `Security Event: ${event}`,
-      metadata,
-      timestamp: new Date().toISOString(),
-      user_id: userId
-    });
-  }
-} 
+export const logDebug = (message: string, context?: object) => {
+  logger.debug({
+    message,
+    ...context
+  });
+}; 

@@ -1,13 +1,25 @@
 import { MeetingDetails } from '@/types/meetings';
 
 export async function fetchAvailability() {
-  // כאן תהיה קריאה לשרת לקבלת זמינות משתתפים
-  return {};
+  // לוגיקה לשליפת זמינות משתתפים מהשרת
+  return [];
 }
 
 export async function createMeeting(meetingDetails: MeetingDetails) {
-  // כאן תהיה קריאה לשרת ליצירת פגישה חדשה
-  return {};
+  // לוגיקה ליצירת פגישה חדשה בשרת
+  const response = await fetch('/api/meetings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(meetingDetails),
+  });
+
+  if (!response.ok) {
+    throw new Error('שגיאה ביצירת הפגישה');
+  }
+
+  return response.json();
 }
 
 export async function createGoogleCalendarEvent(event: any) {
@@ -39,7 +51,32 @@ export async function createConferenceRoom(details: {
   };
 }
 
-export async function updateMeeting(meetingDetails: MeetingDetails & { conferenceRoom?: any }) {
-  // כאן תהיה קריאה לשרת לעדכון פרטי הפגישה
-  return {};
+export async function updateMeeting(meetingId: string, meetingDetails: MeetingDetails) {
+  // לוגיקה לעדכון פגישה קיימת בשרת
+  const response = await fetch(`/api/meetings/${meetingId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(meetingDetails),
+  });
+
+  if (!response.ok) {
+    throw new Error('שגיאה בעדכון הפגישה');
+  }
+
+  return response.json();
+}
+
+export async function deleteMeeting(meetingId: string) {
+  // לוגיקה למחיקת פגישה מהשרת
+  const response = await fetch(`/api/meetings/${meetingId}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('שגיאה במחיקת הפגישה');
+  }
+
+  return response.json();
 } 
